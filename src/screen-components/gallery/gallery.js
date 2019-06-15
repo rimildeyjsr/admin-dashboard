@@ -1,5 +1,6 @@
 import React from 'react';
 import './gallery.css';
+import Photo from '../photo/Photo';
 
 class Gallery extends React.component {
 
@@ -15,7 +16,7 @@ class Gallery extends React.component {
         {
           this.photos.map((photo) => {
             return(
-              <div className='photo-block'></div>
+              <Photo></Photo>
             )
           })
         }
@@ -23,3 +24,5 @@ class Gallery extends React.component {
     )
   }
 }
+
+export default Gallery;
