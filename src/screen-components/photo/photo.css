@@ -1,0 +1,14 @@
+.photo-wrapper {
+    width: 200px;
+    height: 200px;
+    border: 0.5px solid grey;
+    border-radius: 2px;
+    margin: 2px;
+    padding: 1px;
+}
+
+.photo {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+}

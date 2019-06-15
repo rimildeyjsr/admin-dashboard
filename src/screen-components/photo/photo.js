@@ -1,14 +1,16 @@
-import React from 'react';
-import './gallery.css';
+import React, {Component} from 'react';
+import './photo.css';
 
-class Photo extends React.component {
+class Photo extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <div className='photo-wrapper'></div>
+      <div className='photo-wrapper'>
+        <img src={this.props.photoURL} className='photo'/>
+      </div>
     )
   }
 }
