@@ -1,22 +1,15 @@
 import React, {Component} from 'react';
 import './gallery.css';
 import Photo from '../photo/photo';
-import cure from '../../dummy-data/images/curology-1540938-unsplash.jpg';
-import david from '../../dummy-data/images/david-lundgren-1677087-unsplash.jpg';
-import harley from '../../dummy-data/images/harley-davidson-1628439-unsplash.jpg';
-import karly from '../../dummy-data/images/karly-gomez-1561494-unsplash.jpg';
-import simone from '../../dummy-data/images/simone-hutsch-1678080-unsplash.jpg';
-import ursula from '../../dummy-data/images/ursula-lauriston-1673373-unsplash.jpg';
 
 const firebase = require("firebase");
 require("firebase/firestore");
 
 class Gallery extends Component {
 
-  photos = [cure, david, harley, karly, simone, ursula, cure, david, harley, karly, simone, ursula];
-
   constructor(props) {
     super(props);
+    this.state = {photos: []};
     const firebaseConfig = {
       apiKey: "AIzaSyCZySZxPITGy8CzxywIxXGIh7MP8GL5E8c",
       authDomain: "admin-dashboard-ceacb.firebaseapp.com",
@@ -26,7 +19,30 @@ class Gallery extends Component {
       messagingSenderId: "34050641425",
       appId: "1:34050641425:web:38b650461527084e"
     };
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    this.loadData();
+  }
+
+  loadData() {
+    let db = firebase.firestore();
+    let self = this;
+    db.collection("gallery").onSnapshot(function(querySnapshot) {
+      querySnapshot.docChanges().forEach(function(change) {
+        let reqURL = change.doc.data().downloadURL;
+        if (change.type === 'removed') {
+          self.setState((prevState) => ({
+            photos: prevState.photos.filter((url) =>{
+              return url !== reqURL;
+            })
+          }))
+        } else {
+        self.setState((prevState) => ({
+          photos : [...prevState.photos, reqURL]
+        }));
+      }});
+    });
   }
 
   getImage(event) {
@@ -58,11 +74,11 @@ class Gallery extends Component {
   }
 
   render() {
-    return(
+    return !!this.state.photos ? (
       <div className='gallery-upload-button-wrapper'>
         <div className='gallery-component'>
           {
-            this.photos.map((photo, index) => {
+            this.state.photos.map((photo, index) => {
               return(
                 <Photo photoURL={photo} key={index} />
               )
@@ -81,6 +97,8 @@ class Gallery extends Component {
         <label htmlFor="mediaCapture">Upload Image</label>
       </div>
     )
+    :
+    null
   }
 }
 
