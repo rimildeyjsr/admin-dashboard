@@ -19,8 +19,8 @@ class Photo extends Component {
     super(props);
   }
 
-  onDeleteHandle(id) {
-    console.log(id);
+  onDelete() {
+    this.props.onDelete(this.props.id);
   }
 
   render() {
@@ -30,7 +30,7 @@ class Photo extends Component {
         <img src={this.props.photoURL} className='photo'/>
         <Fab
           aria-label="Delete"
-          onClick={this.onDeleteHandle.bind(this, this.props.id)}
+          onClick={this.onDelete.bind(this)}
           className={classes.fab}
         >
           <DeleteIcon />

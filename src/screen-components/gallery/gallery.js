@@ -34,8 +34,8 @@ class Gallery extends Component {
         let reqURL = dataRef.data().downloadURL;
         if (change.type === 'removed') {
           self.setState((prevState) => ({
-            photos: prevState.photos.filter((url) => {
-              return url.downloadURL !== reqURL;
+            photos: prevState.photos.filter((photo) => {
+              return photo.downloadURL !== reqURL;
             })
           }));
         } else {
@@ -69,6 +69,25 @@ class Gallery extends Component {
     });
   }
 
+  onDelete(id) {
+    this.setState((prevState) => ({
+      photos: prevState.photos.filter((photo) => {
+        return photo.id !== id;
+      })
+    }));
+    firebase.storage().ref('images/' + id).delete().then(function() {
+      let db = firebase.firestore();
+      let dbRef = db.collection("gallery").doc(id);
+      dbRef.delete().then(function() {
+        console.log("Data deleted in Firestore!",id);
+      }).catch(function (error) {
+        console.log(error);
+      })
+    }).catch(function(error) {
+      console.error("error deleting document", error);
+    });
+  }
+
   render() {
     return !!this.state.photos ?
       (
@@ -77,7 +96,12 @@ class Gallery extends Component {
             {
               this.state.photos.map((photo, index) => {
                 return(
-                  <Photo photoURL={photo.data().downloadURL} id={photo.id} key={index}/>
+                  <Photo
+                    photoURL={photo.data().downloadURL}
+                    id={photo.id}
+                    key={index}
+                    onDelete={this.onDelete.bind(this)}
+                  />
                 )
               })
             }
