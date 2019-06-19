@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Gallery from './screen-components/gallery/gallery';
-
+import 'typeface-roboto';
 
 function App() {
   return (

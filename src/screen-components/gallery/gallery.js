@@ -30,16 +30,17 @@ class Gallery extends Component {
     let self = this;
     db.collection("gallery").onSnapshot(function(querySnapshot) {
       querySnapshot.docChanges().forEach(function(change) {
-        let reqURL = change.doc.data().downloadURL;
+        let dataRef = change.doc;
+        let reqURL = dataRef.data().downloadURL;
         if (change.type === 'removed') {
           self.setState((prevState) => ({
-            photos: prevState.photos.filter((url) =>{
-              return url !== reqURL;
+            photos: prevState.photos.filter((url) => {
+              return url.downloadURL !== reqURL;
             })
-          }))
+          }));
         } else {
         self.setState((prevState) => ({
-          photos : [...prevState.photos, reqURL]
+          photos : [...prevState.photos, dataRef]
         }));
       }});
     });
@@ -49,10 +50,6 @@ class Gallery extends Component {
     event.preventDefault();
     let file = event.target.files[0];
     this.saveImageMessage(file);
-  }
-
-  getUserName() {
-    return firebase.auth().currentUser.displayName;
   }
 
   saveImageMessage(file) {
@@ -70,33 +67,33 @@ class Gallery extends Component {
     .catch((error) => {
       console.error("Error adding document: ", error);
     });
-
   }
 
   render() {
-    return !!this.state.photos ? (
-      <div className='gallery-upload-button-wrapper'>
-        <div className='gallery-component'>
-          {
-            this.state.photos.map((photo, index) => {
-              return(
-                <Photo photoURL={photo} key={index} />
-              )
-            })
-          }
+    return !!this.state.photos ?
+      (
+        <div className='gallery-upload-button-wrapper'>
+          <div className='gallery-component'>
+            {
+              this.state.photos.map((photo, index) => {
+                return(
+                  <Photo photoURL={photo.data().downloadURL} id={photo.id} key={index}/>
+                )
+              })
+            }
+          </div>
+          <input
+            name="mediaCapture"
+            id="mediaCapture"
+            type="file"
+            accept="image/*"
+            capture="camera"
+            className='upload-input'
+            onChange={this.getImage.bind(this)}
+          />
+          <label htmlFor="mediaCapture">Upload Image</label>
         </div>
-        <input
-          name="mediaCapture"
-          id="mediaCapture"
-          type="file"
-          accept="image/*"
-          capture="camera"
-          className='upload-input'
-          onChange={this.getImage.bind(this)}
-        />
-        <label htmlFor="mediaCapture">Upload Image</label>
-      </div>
-    )
+      )
     :
     null
   }
