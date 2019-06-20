@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './previewLightbox.css';
+import crossButton from '../../images/cross-button.png'
 
 class PreviewLightbox extends Component {
 
@@ -11,12 +12,23 @@ class PreviewLightbox extends Component {
     return (
       <div className='preview-lightbox-wrapper'>
         <div className='preview-lightbox-inner'>
-          <button onClick={this.props.closeLightBox}>Close PopUp</button>
           <img
-            src={this.props.imageURL}
-            className='preview-image'
+            onClick={this.props.closeLightBox}
+            src={crossButton}
+            className='cross-button'
           />
-          <button onClick={this.props.updateImage}>Upload Image</button>
+          <div className='preview-image-div'>
+            <img
+              src={this.props.imageURL}
+              className='preview-image'
+            />
+          </div>
+          <button
+            className='upload-button'
+            onClick={this.props.updateImage}
+          >
+            UPLOAD
+          </button>
         </div>
       </div>
     )

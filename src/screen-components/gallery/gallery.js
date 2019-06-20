@@ -139,7 +139,7 @@ class Gallery extends Component {
             className='upload-input'
             onChange={this.showPreview.bind(this)}
           />
-          <label htmlFor="mediaCapture">Upload Image</label>
+          <label htmlFor="mediaCapture">UPLOAD PHOTOS</label>
           {
             this.state.showPreviewPopup ?
             <PreviewLightbox

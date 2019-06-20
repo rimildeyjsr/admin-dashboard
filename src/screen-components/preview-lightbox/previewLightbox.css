@@ -11,16 +11,47 @@
 }
 
 .preview-lightbox-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: white;
     position: absolute;
-    left: 25%;
-    right: 25%;
-    top: 25%;
-    bottom: 25%;
+    left: 20%;
+    right: 20%;
+    top: 12%;
+    bottom: 20%;
     margin: auto;
+    border-radius: 15px;
+}
+
+.cross-button {
+    margin: 35px 35px 35px auto;
+    width: 30px;
+    cursor: pointer;
+}
+
+.preview-image-div{
+    width: 350px;
+    height: 350px;
+    margin-bottom: 70px;
 }
 
 .preview-image {
+    width: 350px;
+    height: 350px;
+    object-fit: contain;
+}
+
+.upload-button {
+    text-align: center;
+    cursor: pointer;
     width: 200px;
-    height: 200px;
+    height: 40px;
+    border-radius: 3px;
+    background-color: #0d47a1;
+    color: white;
+    border: 1px solid #0d47a1;
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-bottom: 45px;
 }
