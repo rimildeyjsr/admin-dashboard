@@ -10,7 +10,8 @@ const useStyles = theme => ({
     height: '40px',
     backgroundColor: '#ffffff',
     position: 'absolute',
-    top: '1%',
+    top: '2%',
+    right: '5%'
   }
 });
 class Photo extends Component {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './gallery.css';
 import Photo from '../photo/photo';
+import PreviewLightbox from "../preview-lightbox/previewLightbox";
 
 const firebase = require("firebase");
 require("firebase/firestore");
@@ -9,7 +10,12 @@ class Gallery extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {photos: []};
+    this.state = {
+      photos: [],
+      showPreviewPopup: false,
+      tempImageURL: null,
+      fileID: null
+    };
     const firebaseConfig = {
       apiKey: "AIzaSyCZySZxPITGy8CzxywIxXGIh7MP8GL5E8c",
       authDomain: "admin-dashboard-ceacb.firebaseapp.com",
@@ -48,8 +54,7 @@ class Gallery extends Component {
 
   getImage(event) {
     event.preventDefault();
-    let file = event.target.files[0];
-    this.saveImageMessage(file);
+    this.saveImageMessage(this.state.fileID);
   }
 
   saveImageMessage(file) {
@@ -61,6 +66,9 @@ class Gallery extends Component {
           downloadURL: url
         }).then( () => {
           console.log("Data stored in Firestore!", url);
+          this.setState({
+            showPreviewPopup : !this.state.showPreviewPopup
+          })
         });
       });
     })
@@ -85,6 +93,22 @@ class Gallery extends Component {
       })
     }).catch(function(error) {
       console.error("error deleting document", error);
+    });
+  }
+
+  showPreview(event) {
+    event.preventDefault();
+    let file = event.target.files[0];
+    this.setState({
+      tempImageURL: URL.createObjectURL(file),
+      showPreviewPopup: !this.state.showPreviewPopup,
+      fileID: file
+    });
+  }
+
+  toggleLightBoxDisplay() {
+    this.setState( {
+      showPreviewPopup: !this.state.showPreviewPopup
     });
   }
 
@@ -113,9 +137,19 @@ class Gallery extends Component {
             accept="image/*"
             capture="camera"
             className='upload-input'
-            onChange={this.getImage.bind(this)}
+            onChange={this.showPreview.bind(this)}
           />
           <label htmlFor="mediaCapture">Upload Image</label>
+          {
+            this.state.showPreviewPopup ?
+            <PreviewLightbox
+              imageURL={this.state.tempImageURL}
+              closeLightBox={this.toggleLightBoxDisplay.bind(this)}
+              updateImage={this.getImage.bind(this)}
+            />
+            :
+            null
+          }
         </div>
       )
     :

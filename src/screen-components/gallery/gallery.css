@@ -30,8 +30,6 @@
     border-radius: 35px;
     background-color: #0d47a1;
     color: white;
-    position: relative;
-    z-index: 9999;
     border: 1px solid #0d47a1;
     box-shadow: -1px 0px 13px 0px rgba(0,0,0,0.76);
 }
