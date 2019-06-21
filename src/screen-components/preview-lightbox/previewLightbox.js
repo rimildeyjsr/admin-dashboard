@@ -4,10 +4,6 @@ import crossButton from '../../images/cross-button.png'
 
 class PreviewLightbox extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className='preview-lightbox-wrapper'>
@@ -15,6 +11,7 @@ class PreviewLightbox extends Component {
           <img
             onClick={this.props.closeLightBox}
             src={crossButton}
+            alt='Cross button image'
             className='cross-button'
           />
           <div className='preview-image-div'>

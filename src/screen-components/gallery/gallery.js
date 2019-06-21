@@ -32,23 +32,29 @@ class Gallery extends Component {
   }
 
   loadData() {
-    let db = firebase.firestore();
     let self = this;
-    db.collection("gallery").onSnapshot(function(querySnapshot) {
+    let db = firebase.firestore();
+    let query = db.collection('gallery')
+      .orderBy('timestamp', 'desc');
+    query.onSnapshot(function(querySnapshot) {
       querySnapshot.docChanges().forEach(function(change) {
         let dataRef = change.doc;
+        let source = dataRef.metadata.hasPendingWrites ? 'Local' : 'Server';
         let reqURL = dataRef.data().downloadURL;
-        if (change.type === 'removed') {
-          self.setState((prevState) => ({
-            photos: prevState.photos.filter((photo) => {
-              return photo.downloadURL !== reqURL;
-            })
-          }));
-        } else {
-        self.setState((prevState) => ({
-          photos : [...prevState.photos, dataRef]
-        }));
-      }});
+        if (source === 'Server') {
+          if (change.type === 'removed') {
+            self.setState((prevState) => ({
+              photos: prevState.photos.filter((photo) => {
+                return photo.downloadURL !== reqURL;
+              })
+            }));
+          } else {
+            self.setState((prevState) => ({
+              photos : [...prevState.photos, dataRef]
+            }));
+          }
+        }
+        });
     });
   }
 
@@ -63,7 +69,8 @@ class Gallery extends Component {
         let db = firebase.firestore();
         let dbRef = db.collection("gallery").doc(file.name);
         dbRef.set({
-          downloadURL: url
+          downloadURL: url,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then( () => {
           console.log("Data stored in Firestore!", url);
           this.setState({
