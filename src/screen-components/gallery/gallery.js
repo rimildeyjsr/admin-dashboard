@@ -15,7 +15,7 @@ class Gallery extends Component {
       showPreviewPopup: false,
       tempImageURL: null,
       fileID: null,
-      progressPercent: 0
+      showProgress: false,
     };
     const firebaseConfig = {
       apiKey: "AIzaSyCZySZxPITGy8CzxywIxXGIh7MP8GL5E8c",
@@ -65,6 +65,9 @@ class Gallery extends Component {
   }
 
   saveImageMessage(file) {
+    this.setState({
+      showProgress: true
+    });
     let uploadTask = firebase.storage().ref('images/' + file.name).put(file);
     uploadTask.then((snapshot) => {
       return snapshot.ref.getDownloadURL().then((url) => {
@@ -77,20 +80,13 @@ class Gallery extends Component {
           console.log("Data stored in Firestore!", url);
           this.setState({
             showPreviewPopup : !this.state.showPreviewPopup,
-            progressPercent: 0,
+            showProgress: false
           })
         });
       });
     })
     .catch((error) => {
       console.error("Error adding document: ", error);
-    });
-
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) =>{
-      let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      this.setState({
-        progressPercent: progress
-      });
     });
   }
 
@@ -163,7 +159,7 @@ class Gallery extends Component {
               imageURL={this.state.tempImageURL}
               closeLightBox={this.toggleLightBoxDisplay.bind(this)}
               updateImage={this.getImage.bind(this)}
-              progressPercent={this.state.progressPercent}
+              showProgress={this.state.showProgress}
             />
             :
             null

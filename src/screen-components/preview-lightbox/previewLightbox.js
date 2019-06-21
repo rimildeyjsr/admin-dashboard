@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './previewLightbox.css';
 import crossButton from '../../images/cross-button.png';
-import CircularDeterminate from "../circular-progress/circularProgress";
+import CircularIndeterminate from "../circular-progress/circularProgress";
 
 class PreviewLightbox extends Component {
   render() {
@@ -20,7 +20,7 @@ class PreviewLightbox extends Component {
               className='preview-image'
             />
           </div>
-          <CircularDeterminate progressPercent={this.props.progressPercent}/>
+          <CircularIndeterminate showProgress={this.props.showProgress}/>
           <button
             className='upload-button'
             onClick={this.props.updateImage}

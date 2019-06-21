@@ -9,27 +9,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CircularDeterminate(props) {
+export default function CircularIndeterminate(props) {
   const classes = useStyles();
-  const [progress, setProgress] = React.useState(0);
-
-  React.useEffect(() => {
-    function tick() {
-      setProgress(oldProgress => (oldProgress >= 100 ? 0 : oldProgress + progress));
-    }
-    const timer = setInterval(tick , 10);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
   return (
     <div className='circular-progress-div'>
-      <CircularProgress
-        className={classes.progress}
-        variant="determinate"
-        value={props.progressPercent}
-      />
+      {props.showProgress ?
+        <CircularProgress
+          className={classes.progress}
+        />
+        :
+        null
+      }
     </div>
   );
 }
