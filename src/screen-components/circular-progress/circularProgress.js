@@ -27,7 +27,7 @@ export default function CircularDeterminate(props) {
     <div className='circular-progress-div'>
       <CircularProgress
         className={classes.progress}
-        variant="static"
+        variant="determinate"
         value={props.progressPercent}
       />
     </div>
