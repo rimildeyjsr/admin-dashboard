@@ -13,12 +13,22 @@ export default function CircularIndeterminate(props) {
   const classes = useStyles();
   return (
     <div className='circular-progress-div'>
-      {props.showProgress ?
+      {
+        props.showUploadProgress ?
         <CircularProgress
           className={classes.progress}
         />
         :
         null
+      }
+      {
+        props.showDeleteProgress ?
+          <CircularProgress
+            className={classes.progress}
+            color='secondary'
+          />
+          :
+          null
       }
     </div>
   );

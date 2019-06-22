@@ -16,14 +16,20 @@ const useStyles = theme => ({
 });
 class Photo extends Component {
 
-  onDelete() {
+  onDelete(event) {
+    event.stopPropagation();
     this.props.onDelete(this.props.id);
   }
+
+  clickHandler() {
+    this.props.onClick(this.props.id, this.props.photoURL)
+  }
+
 
   render() {
     const { classes } = this.props;
     return (
-      <div className='photo-wrapper'>
+      <div className='photo-wrapper' onClick={this.clickHandler.bind(this)}>
         <img src={this.props.photoURL} className='photo'/>
         <Fab
           aria-label="Delete"

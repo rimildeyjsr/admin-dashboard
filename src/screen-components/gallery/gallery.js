@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './gallery.css';
 import Photo from '../photo/photo';
 import PreviewLightbox from "../preview-lightbox/previewLightbox";
+import CircularIndeterminate from "../circular-progress/circularProgress";
+import DetailPictureViewLightbox from "../detail-picture-view-lightbox/detailPictureViewLightbox";
 
 const firebase = require("firebase");
 require("firebase/firestore");
@@ -13,10 +15,13 @@ class Gallery extends Component {
     this.state = {
       photos: [],
       showPreviewPopup: false,
+      showExpandedImagePopup: false,
       tempImageURL: null,
       fileID: null,
-      showProgress: false,
+      showUploadProgress: false,
+      showDeleteProgress: false,
     };
+
     const firebaseConfig = {
       apiKey: "AIzaSyCZySZxPITGy8CzxywIxXGIh7MP8GL5E8c",
       authDomain: "admin-dashboard-ceacb.firebaseapp.com",
@@ -24,11 +29,13 @@ class Gallery extends Component {
       projectId: "admin-dashboard-ceacb",
       storageBucket: "admin-dashboard-ceacb.appspot.com",
       messagingSenderId: "34050641425",
-      appId: "1:34050641425:web:38b650461527084e"
+      appId: "1:34050641425:web:38b650461527084e",
     };
+
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+
     this.loadData();
   }
 
@@ -36,7 +43,7 @@ class Gallery extends Component {
     let self = this;
     let db = firebase.firestore();
     let query = db.collection('gallery')
-      .orderBy('timestamp', 'desc');
+      .orderBy('timestamp', 'asc');
     query.onSnapshot(function(querySnapshot) {
       querySnapshot.docChanges().forEach(function(change) {
         let dataRef = change.doc;
@@ -51,7 +58,7 @@ class Gallery extends Component {
             }));
           } else {
             self.setState((prevState) => ({
-              photos : [...prevState.photos, dataRef]
+              photos : [dataRef, ...prevState.photos],
             }));
           }
         }
@@ -64,9 +71,14 @@ class Gallery extends Component {
     this.saveImageMessage(this.state.fileID);
   }
 
+  deleteImageFromExpandedPreview(event) {
+    event.preventDefault();
+    this.onDelete(this.state.fileID);
+  }
+
   saveImageMessage(file) {
     this.setState({
-      showProgress: true
+      showUploadProgress: true
     });
     let uploadTask = firebase.storage().ref('images/' + file.name).put(file);
     uploadTask.then((snapshot) => {
@@ -80,7 +92,7 @@ class Gallery extends Component {
           console.log("Data stored in Firestore!", url);
           this.setState({
             showPreviewPopup : !this.state.showPreviewPopup,
-            showProgress: false
+            showUploadProgress: false,
           })
         });
       });
@@ -91,16 +103,23 @@ class Gallery extends Component {
   }
 
   onDelete(id) {
-    this.setState((prevState) => ({
-      photos: prevState.photos.filter((photo) => {
-        return photo.id !== id;
-      })
-    }));
+    console.log(id);
+    let self = this;
+    this.setState({
+      showDeleteProgress: true
+    });
     firebase.storage().ref('images/' + id).delete().then(function() {
       let db = firebase.firestore();
       let dbRef = db.collection("gallery").doc(id);
       dbRef.delete().then(function() {
         console.log("Data deleted in Firestore!",id);
+        self.setState((prevState) => ({
+          showDeleteProgress: false,
+          showExpandedImagePopup: false,
+          photos: prevState.photos.filter((photo) => {
+            return photo.id !== id;
+          })
+        }));
       }).catch(function (error) {
         console.log(error);
       })
@@ -115,13 +134,31 @@ class Gallery extends Component {
     this.setState({
       tempImageURL: URL.createObjectURL(file),
       showPreviewPopup: !this.state.showPreviewPopup,
-      fileID: file
+      fileID: file,
     });
   }
 
   toggleLightBoxDisplay() {
     this.setState( {
-      showPreviewPopup: !this.state.showPreviewPopup
+      showPreviewPopup: !this.state.showPreviewPopup,
+      tempImageURL: null,
+      fileID: null,
+    });
+  }
+
+  showExpandedImagePreview(id, downloadURL) {
+    this.setState({
+      showExpandedImagePopup: !this.state.showExpandedImagePopup,
+      fileID: id,
+      tempImageURL: downloadURL,
+    });
+  }
+
+  toggleExpandedImagePreviewDisplay() {
+    this.setState({
+      showExpandedImagePopup: !this.state.showExpandedImagePopup,
+      fileID: null,
+      tempImageURL: null,
     });
   }
 
@@ -129,6 +166,7 @@ class Gallery extends Component {
     return !!this.state.photos ?
       (
         <div className='gallery-upload-button-wrapper'>
+
           <div className='gallery-component'>
             {
               this.state.photos.map((photo, index) => {
@@ -138,11 +176,15 @@ class Gallery extends Component {
                     id={photo.id}
                     key={index}
                     onDelete={this.onDelete.bind(this)}
+                    onClick={this.showExpandedImagePreview.bind(this)}
                   />
                 )
               })
             }
           </div>
+
+          <CircularIndeterminate showDeleteProgress={this.state.showDeleteProgress}/>
+
           <input
             name="mediaCapture"
             id="mediaCapture"
@@ -153,16 +195,29 @@ class Gallery extends Component {
             onChange={this.showPreview.bind(this)}
           />
           <label htmlFor="mediaCapture">UPLOAD PHOTOS</label>
+
           {
             this.state.showPreviewPopup ?
             <PreviewLightbox
               imageURL={this.state.tempImageURL}
               closeLightBox={this.toggleLightBoxDisplay.bind(this)}
               updateImage={this.getImage.bind(this)}
-              showProgress={this.state.showProgress}
+              showUploadProgress={this.state.showUploadProgress}
             />
             :
             null
+          }
+
+          {
+            this.state.showExpandedImagePopup ?
+              <DetailPictureViewLightbox
+                imageURL={this.state.tempImageURL}
+                closeLightBox={this.toggleExpandedImagePreviewDisplay.bind(this)}
+                showDeleteProgress={this.state.showDeleteProgress}
+                deleteImage={this.deleteImageFromExpandedPreview.bind(this)}
+              />
+              :
+              null
           }
         </div>
       )

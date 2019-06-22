@@ -20,7 +20,7 @@ class PreviewLightbox extends Component {
               className='preview-image'
             />
           </div>
-          <CircularIndeterminate showProgress={this.props.showProgress}/>
+          <CircularIndeterminate showUploadProgress={this.props.showUploadProgress}/>
           <button
             className='upload-button'
             onClick={this.props.updateImage}
