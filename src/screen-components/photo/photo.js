@@ -10,7 +10,7 @@ const useStyles = theme => ({
     height: '40px',
     backgroundColor: '#ffffff',
     position: 'absolute',
-    top: '2%',
+    top: '75%',
     right: '5%'
   }
 });
