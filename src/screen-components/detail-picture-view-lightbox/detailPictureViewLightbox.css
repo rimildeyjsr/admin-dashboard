@@ -8,6 +8,7 @@
     bottom: 0;
     margin: auto;
     background-color: rgba(0,0,0, 0.5);
+    z-index: 20;
 }
 
 .preview-lightbox-inner {
@@ -23,6 +24,7 @@
     margin: auto;
     border-radius: 15px;
     height: max-content;
+    z-index: 20;
 }
 
 .cross-button {
