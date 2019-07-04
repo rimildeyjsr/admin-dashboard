@@ -1,0 +1,18 @@
+.component-wrapper,
+.login-component-wrapper {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+.admin-portal-title {
+    font-family: Zilla Slab, serif;
+    font-weight: 400;
+    margin-top: 200px;
+    margin-bottom: 120px;
+    color: grey;
+}
