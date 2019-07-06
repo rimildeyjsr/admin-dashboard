@@ -22,7 +22,7 @@ class Photo extends Component {
   }
 
   clickHandler() {
-    this.props.onClick(this.props.id, this.props.photoURL)
+    this.props.onClick(this.props.id, this.props.photoURL);
   }
 
 

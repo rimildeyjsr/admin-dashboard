@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './loginPage.css';
-import GoogleButton from 'react-google-button';
 import firebaseConfig from '../../firebase-config';
-import Gallery from "../gallery/gallery";
 import LoginError from "../login-error/loginError";
+import MainDashboard from "../main-dashboard/main-dashboard";
+import GoogleButton from "react-google-button";
 
 const firebase = require("firebase");
 require("firebase/auth");
@@ -81,7 +81,7 @@ class LoginPage extends Component {
 
         {
           this.state.showAdminDashboard ?
-          <Gallery/>
+          <MainDashboard/>
           :
           null
         }

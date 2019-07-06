@@ -169,6 +169,7 @@ class Gallery extends Component {
                     onDelete={this.onDelete.bind(this)}
                     onClick={this.showExpandedImagePreview.bind(this)}
                   />
+
                 )
               })
             }

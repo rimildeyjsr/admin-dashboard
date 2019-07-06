@@ -13,6 +13,7 @@ class Sidebar extends Component {
     this.setState({
       selectedID: id
     });
+    this.props.changeSelection(id);
   }
 
   applyActiveOrInactiveColourClass(id) {

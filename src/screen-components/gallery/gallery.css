@@ -1,8 +1,11 @@
 .gallery-upload-button-wrapper{
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: calc(100% - 100px);
+    margin-left: 100px;
 }
 
 .gallery-component {
