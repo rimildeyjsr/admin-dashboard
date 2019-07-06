@@ -1,14 +1,11 @@
 .sidebar-wrapper {
     width: 100px;
-    height: 80%;
+    height: 100%;
     position: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     background-color: white;
-    padding-top: 30px;
-    padding-bottom: 150px;
     -webkit-box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.2);
     -moz-box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.2);
     box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.2);
@@ -20,6 +17,7 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
+    margin-bottom: 120px;
 }
 
 .svg-item {
