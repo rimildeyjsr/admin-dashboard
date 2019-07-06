@@ -1,0 +1,50 @@
+.sidebar-wrapper {
+    width: 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding-top: 30px;
+    padding-bottom: 150px;
+    -webkit-box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.2);
+    box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.2);
+}
+
+.svg-button {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.svg-item {
+    margin: auto;
+}
+
+.inactive-colour {
+    fill: #757575;
+    fill-rule: evenodd;
+}
+
+.active-colour {
+    fill: #104d8c;
+    fill-rule: evenodd;
+}
+
+.active-line {
+    width: 6px;
+    height: 100px;
+    background-color: #104d8c;
+}
+
+.show-active-line {
+    visibility: visible;
+}
+
+.hide-active-line {
+    visibility: hidden;
+}
