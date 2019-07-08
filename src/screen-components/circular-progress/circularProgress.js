@@ -7,6 +7,10 @@ const useStyles = makeStyles(theme => ({
   progress: {
     margin: theme.spacing(2),
   },
+  whiteProgress: {
+    margin: theme.spacing(2),
+    color: 'white',
+  }
 }));
 
 export default function CircularIndeterminate(props) {
@@ -14,9 +18,10 @@ export default function CircularIndeterminate(props) {
   return (
     <div className='circular-progress-div'>
       {
-        (props.showUploadProgress || props.showLoginProgress) ?
+        props.showUploadProgress ?
         <CircularProgress
           className={classes.progress}
+          color='primary'
         />
         :
         null
@@ -26,6 +31,15 @@ export default function CircularIndeterminate(props) {
           <CircularProgress
             className={classes.progress}
             color='secondary'
+          />
+          :
+          null
+      }
+      {
+        props.showLoginProgress ?
+          <CircularProgress
+            className={classes.whiteProgress}
+            color='inherit'
           />
           :
           null
