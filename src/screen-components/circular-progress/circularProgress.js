@@ -14,7 +14,7 @@ export default function CircularIndeterminate(props) {
   return (
     <div className='circular-progress-div'>
       {
-        props.showUploadProgress ?
+        (props.showUploadProgress || props.showLoginProgress) ?
         <CircularProgress
           className={classes.progress}
         />

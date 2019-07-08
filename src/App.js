@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Gallery from './screen-components/gallery/gallery';
 import LoginPage from './screen-components/login-page/loginPage';
 import 'typeface-roboto';
 

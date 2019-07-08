@@ -3,7 +3,9 @@ import './loginPage.css';
 import firebaseConfig from '../../firebase-config';
 import LoginError from "../login-error/loginError";
 import MainDashboard from "../main-dashboard/main-dashboard";
-import GoogleButton from "react-google-button";
+import schoolLogo from "../../images/school-logo.svg";
+import googleButton from "../../images/ggogbtn.svg";
+import CircularIndeterminate from "../circular-progress/circularProgress";
 
 const firebase = require("firebase");
 require("firebase/auth");
@@ -21,12 +23,16 @@ class LoginPage extends Component {
     this.state = {
       showErrorDialog: false,
       showAdminDashboard: false,
+      showLoginProgress: false,
     }
   }
 
   handleLoginClick() {
     let provider = new firebase.auth.GoogleAuthProvider();
     let self = this;
+    this.setState({
+      showLoginProgress: true,
+    });
     firebase.auth().signInWithPopup(provider).then(function(result) {
       self.checkifUserHasAccess(result.user.email);
     }).catch(function(error) {
@@ -48,11 +54,13 @@ class LoginPage extends Component {
       });
       if (hasAccess) {
         self.setState({
-          showAdminDashboard: true
+          showAdminDashboard: true,
+          showLoginProgress: false,
         });
       } else {
         self.setState({
-          showErrorDialog: true
+          showErrorDialog: true,
+          showLoginProgress: false,
         });
       }
     });
@@ -70,10 +78,17 @@ class LoginPage extends Component {
         {
           !this.state.showAdminDashboard && !this.state.showErrorDialog ?
             <div className='login-component-wrapper'>
-              <h1 className='admin-portal-title'>Admin Portal</h1>
-              <GoogleButton
-                onClick={this.handleLoginClick.bind(this)}
-              />
+              <img src={schoolLogo} className='school-logo-img'/>
+              {
+                !this.state.showLoginProgress ?
+                <img
+                  src={googleButton}
+                  className='sign-in-button'
+                  onClick={this.handleLoginClick.bind(this)}
+                />
+                :
+                <CircularIndeterminate showLoginProgress={this.state.showLoginProgress}/>
+              }
             </div>
           :
           null

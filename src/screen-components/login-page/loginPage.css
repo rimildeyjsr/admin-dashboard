@@ -9,10 +9,17 @@
     justify-content: start;
 }
 
-.admin-portal-title {
-    font-family: Zilla Slab, serif;
-    font-weight: 400;
-    margin-top: 200px;
-    margin-bottom: 120px;
-    color: grey;
+.login-component-wrapper {
+    background: url("../../images/backdrop.png");
+}
+
+.school-logo-img {
+    height: 180px;
+    margin-top: 130px;
+    margin-bottom: 225px;
+}
+
+.sign-in-button {
+    cursor: pointer;
+    width: 300px;
 }
