@@ -14,10 +14,19 @@
 .svg-button {
     cursor: pointer;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 100px;
+    width: 100%;
+}
+
+.svg-line-container {
+    display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
-    margin-bottom: 120px;
+    height: 60px;
+    padding-top: 20px;
 }
 
 .svg-item {
@@ -36,7 +45,7 @@
 
 .active-line {
     width: 6px;
-    height: 100px;
+    height: 120px;
     background-color: #104d8c;
 }
 
@@ -46,4 +55,21 @@
 
 .hide-active-line {
     visibility: hidden;
+}
+
+.button-text {
+    font-family: Roboto, serif;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    margin-right: 6px;
+    font-weight: 500;
+}
+
+.active-text-colour {
+    color: #104d8c;
+}
+
+.inactive-text-colour {
+    color: #757575;
 }
