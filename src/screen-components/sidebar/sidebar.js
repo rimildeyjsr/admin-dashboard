@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
 import './sidebar.css';
+import firebaseConfig from '../../firebase-config';
+
+const firebase = require("firebase");
+require("firebase/auth");
 
 class Sidebar extends Component {
   constructor(props) {
     super(props);
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
     this.state = {
       selectedID: 'gallery',
     }
@@ -14,6 +23,10 @@ class Sidebar extends Component {
       selectedID: id
     });
     this.props.changeSelection(id);
+
+    if (id === 'logout') {
+      this.logoutUser();
+    }
   }
 
   applyActiveOrInactiveColourClass(id) {
@@ -26,6 +39,14 @@ class Sidebar extends Component {
 
   applyActiveOrInactiveTextColour(id) {
     return this.state.selectedID === id ? 'active-text-colour' : 'inactive-text-colour';
+  }
+
+  logoutUser() {
+    firebase.auth().signOut().then(function() {
+      console.log('sign out done');
+    }).catch(function(error) {
+      console.error(error);
+    });
   }
 
   render() {
