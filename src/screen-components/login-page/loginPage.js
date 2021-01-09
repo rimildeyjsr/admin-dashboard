@@ -34,7 +34,11 @@ class LoginPage extends Component {
       showLoginProgress: true,
     });
     firebase.auth().signInWithPopup(provider).then(function(result) {
-      self.checkifUserHasAccess(result.user.email);
+      // self.checkifUserHasAccess(result.user.email);
+      self.setState({
+        showAdminDashboard: true,
+        showLoginProgress: false,
+      });
     }).catch(function(error) {
       console.error(error);
     });
